@@ -5,27 +5,52 @@ import Show from "./components/show";
 import { Post } from "./types/post";
 import { config } from "./lib/utils";
 import Header from "./components/header";
+import { LoadingSpinner } from "./components/loader-spinner";
+import { filterUniquePosts } from "./lib/filter-unique-posts";
 
 export default function App() {
   const [posts, setPosts] = useState<Post[]>([]);
-  const { lastJsonMessage } = useWebSocket(config.SOCKET_URL, {
-    share: false,
-    shouldReconnect: () => true,
-  });
+  const [isLoading, setIsLoading] = useState(false);
 
-  // Run when a new WebSocket message is received (lastJsonMessage)
-  useEffect(() => {
-    if (lastJsonMessage !== undefined && lastJsonMessage !== null) {
-      setPosts((prevPosts) => [
-        ...prevPosts,
-        ...(Array.isArray(lastJsonMessage) ? lastJsonMessage : []),
-      ]);
+  const {
+    lastJsonMessage,
+    readyState,
+  }: { lastJsonMessage: Post[] | null; readyState: number } = useWebSocket(
+    config.SOCKET_URL,
+    {
+      share: false,
+      shouldReconnect: () => true,
     }
-  }, [lastJsonMessage]);
+  );
+
+  useEffect(() => {
+    handleWebSocke(lastJsonMessage, readyState);
+  }, [lastJsonMessage, readyState]);
+
+  const handleWebSocke = (message: Post[] | null, state: number): void => {
+    if (message) {
+      updatePosts(message);
+      setIsLoading(false);
+    } else if (state === WebSocket.CONNECTING) {
+      setIsLoading(true);
+    }
+  };
+
+  const updatePosts = (newPosts: Post[]): void => {
+    setPosts((prevPosts) => {
+      const uniquePosts = filterUniquePosts(prevPosts, newPosts);
+      return [...prevPosts, ...uniquePosts];
+    });
+  };
+
+  if (isLoading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <main className="container mx-auto py-8">
       <Header
+        connectionStatus={readyState}
         githubUrl={config.FE_URL}
         apiDocsUrl={config.BE_URL}
         title="Blog Word Stats"
