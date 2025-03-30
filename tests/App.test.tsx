@@ -1,6 +1,8 @@
+import React from "react";
 import { render, screen, waitFor } from "@testing-library/react";
 import useWebSocket from "react-use-websocket";
 import { beforeEach, describe, it, vi } from "vitest";
+import "@testing-library/jest-dom";
 import App from "../src/App";
 
 const mockPosts = [
