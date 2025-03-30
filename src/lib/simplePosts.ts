@@ -1,0 +1,57 @@
+import { Post } from "@/types/post";
+
+export const samplePosts: Post[] = [
+  {
+    id: 1,
+    title: "Getting Started with Next.js",
+    date_gmt: "2025-02-27T10:28:53",
+    link: "https://example.com/post/1",
+    modified_gmt: "2025-03-05T14:45:22",
+    contentWords: [
+      { word: "Next.js", count: 15 },
+      { word: "React", count: 12 },
+      { word: "JavaScript", count: 8 },
+      { word: "Framework", count: 6 },
+      { word: "Component", count: 10 },
+      { word: "Routing", count: 7 },
+      { word: "Server", count: 9 },
+      { word: "Client", count: 5 },
+      { word: "Rendering", count: 11 },
+    ],
+    excerptWords: [
+      { word: "Tutorial", count: 3 },
+      { word: "Beginner", count: 2 },
+      { word: "Web", count: 5 },
+      { word: "Development", count: 4 },
+      { word: "Frontend", count: 6 },
+    ],
+  },
+  {
+    id: 2,
+    title: "Advanced TypeScript Patterns",
+    date_gmt: "2025-03-12T09:15:37",
+    link: "https://example.com/post/2",
+    modified_gmt: "2025-03-18T16:20:05",
+    contentWords: [
+      { word: "TypeScript", count: 20 },
+      { word: "Interface", count: 14 },
+      { word: "Generic", count: 10 },
+      { word: "Type", count: 18 },
+      { word: "Class", count: 8 },
+      { word: "Function", count: 12 },
+      { word: "Object", count: 15 },
+      { word: "Array", count: 9 },
+      { word: "Union", count: 7 },
+      { word: "Intersection", count: 6 },
+      { word: "Utility", count: 11 },
+    ],
+    excerptWords: [
+      { word: "Advanced", count: 4 },
+      { word: "Programming", count: 6 },
+      { word: "Development", count: 3 },
+      { word: "Language", count: 5 },
+      { word: "Static", count: 2 },
+      { word: "Typing", count: 7 },
+    ],
+  },
+];
