@@ -55,13 +55,15 @@ Word Viz FE is an app to visualize word-related data that comes through WebSocke
 
 ## Usage
 
-1. Start the development server:
+1. Ensure that the `SOCKET_URL` in the `.env` file matches the WebSocket URL for the backend. You can find the backend details in the following repository: [Word Stream BE](https://github.com/MohammadHejazi20/word-stream-BE).
+
+2. Start the development server:
 
    ```bash
    pnpm run dev
    ```
 
-2. Open your browser and navigate to `http://localhost:3000`.
+3. Open your browser and navigate to `http://localhost:3000` or `http://localhost:5173/`.
 
 ## Running Tests
 
