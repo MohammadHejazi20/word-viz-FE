@@ -7,6 +7,7 @@ import { config } from "./lib/utils";
 import Header from "./components/header";
 import { LoadingSpinner } from "./components/loader-spinner";
 import { filterUniquePosts } from "./lib/filter-unique-posts";
+import { Button } from "./components/ui/button";
 
 export default function App() {
   const [posts, setPosts] = useState<Post[]>([]);
@@ -15,13 +16,17 @@ export default function App() {
   const {
     lastJsonMessage,
     readyState,
-  }: { lastJsonMessage: Post[] | null; readyState: number } = useWebSocket(
-    config.SOCKET_URL,
-    {
-      share: false,
-      shouldReconnect: () => true,
-    }
-  );
+    getWebSocket,
+  }: {
+    lastJsonMessage: Post[] | null;
+    readyState: number;
+  } = useWebSocket(config.SOCKET_URL, {
+    share: false,
+    shouldReconnect: () => true,
+    onError: () => {
+      setIsLoading(false);
+    },
+  });
 
   useEffect(() => {
     handleWebSocke(lastJsonMessage, readyState);
@@ -43,6 +48,11 @@ export default function App() {
     });
   };
 
+  const handleRefresh = () => {
+    setIsLoading(true);
+    getWebSocket().send("refresh");
+  };
+
   if (isLoading) {
     return <LoadingSpinner />;
   }
@@ -59,7 +69,22 @@ export default function App() {
         <Show.When isTrue={posts.length > 0}>
           <PostsGrid posts={posts} />
         </Show.When>
-        <Show.Else>Actively waiting for new posts...</Show.Else>
+        <Show.Else>
+          <div className="text-center mt-4">
+            <h2 className="text-2xl font-bold mb-4">No posts available</h2>
+            <p className="text-gray-600">
+              Please check back later for new posts, or try refreshing the page.
+            </p>
+            <Button
+              variant="outline"
+              size="sm"
+              className="mt-4"
+              onClick={handleRefresh}
+            >
+              Refresh
+            </Button>
+          </div>
+        </Show.Else>
       </Show>
     </main>
   );
